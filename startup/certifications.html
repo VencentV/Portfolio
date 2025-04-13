@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Taking the Leap | GODSPEED</title>
+    <style>
+        .faq-description {
+            display: none; /* Hidden by default */
+            margin-top: 10px;
+            color: #4a4a4a;
+            transition: opacity 0.3s ease;
+        }
+    
+        /* Show the description on hover */
+        .faq-item:hover .faq-description {
+            display: block;
+        }
+    
+        /* Show the description when it's not hidden (for toggling via JavaScript) */
+        .faq-item .faq-description:not(.hidden) {
+            display: block;
+        }
+    
+        /* Pop-out and reshade effect */
+        .faq-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        .faq-item:hover {
+            transform: translateY(-5px); /* Slight lift effect */
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.15); /* Deepen the shadow */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Navigation -->
+    <div class="flex flex-col min-h-screen">
+        <header class="bg-black text-white">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="text-2xl font-bold">GODSPEED</div>
+                <nav class="hidden md:flex space-x-4">
+                    <a href="index.html" class="hover:text-yellow-300 transition">Home</a>
+                    <a href="SEO-Services.html" class="hover:text-blue-400">SEO Services</a>
+                    <a href="certifications.html" class="hover:text-blue-400">Taking the Leap</a>
+                    <!-- <a href="#" class="hover:text-blue-400">Advanced Training</a> -->
+                    <a href="about-us.html" class="hover:text-blue-400">About Us</a>
+                </nav>
+                <button class="border border-white text-white hover:bg-white hover:text-black px-4 py-2">
+                    Sign In
+                </button>
+            </div>
+        </header>
+    
+    <!-- Hero Section -->
+    <section class="hero bg-cover bg-center text-center text-white py-20" style="background-image: url('assets/pictures/SEO-e1.png'); background-position: top right;">
+        <h1 class="text-5xl font-bold mb-4">Learning to Dive: Certifications</h1>
+        <p class="text-lg mb-8">Explore our certification paths designed for all levels, from beginner to advanced.</p>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded">Start Your Journey</button>
+    </section>
+
+    <!-- Certifications Overview -->
+    <section class="certifications-overview container mx-auto py-16 px-4">
+        <h2 class="text-4xl font-bold text-center mb-12">Our Certification Programs</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- Beginner Certification Card -->
+            <div class="cert-card bg-white p-6 rounded shadow-lg text-center flex flex-col items-center">
+                <img src="assets/pictures/c2.png" alt="Beginner Certification" class="w-full h-40 object-cover mb-2 rounded">
+                <h3 class="text-2xl font-bold mb-2">Beginner Certification</h3>
+                <p class="mb-4">Ideal for newcomers. Dive into the basics and learn the fundamentals.</p>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded">Learn More</button>
+            </div>
+            
+            <!-- Intermediate Certification Card -->
+            <div class="cert-card bg-white p-6 rounded shadow-lg text-center">
+                <img src="assets/pictures/c3.png" alt="Intermediate Certification" class="w-full h-40 object-cover mb-4 rounded">
+                <h3 class="text-2xl font-bold mb-2">Intermediate Certification</h3>
+                <p class="mb-4">Expand your knowledge with advanced techniques and hands-on practice.</p>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded">Learn More</button>
+            </div>
+
+            <!-- Advanced Certification Card -->
+            <div class="cert-card bg-white p-6 rounded shadow-lg text-center">
+                <img src="assets/pictures/c4.png" alt="Advanced Certification" class="w-full h-40 object-cover mb-4 rounded">
+                <h3 class="text-2xl font-bold mb-2">Advanced Certification</h3>
+                <p class="mb-4">Perfect for experts. Dive deeper and master your skills.</p>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded">Learn More</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Steps to Certification -->
+    <section class="steps bg-gray-100 py-16 px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8">Steps to Get Certified</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="step bg-white p-6 rounded shadow-md">
+                    <h3 class="text-2xl font-bold mb-2">1. Sign Up</h3>
+                    <p>Choose the certification level that fits you best and sign up to get started.</p>
+                </div>
+                <div class="step bg-white p-6 rounded shadow-md">
+                    <h3 class="text-2xl font-bold mb-2">2. Take the Course</h3>
+                    <p>Engage in our interactive and informative course materials.</p>
+                </div>
+                <div class="step bg-white p-6 rounded shadow-md">
+                    <h3 class="text-2xl font-bold mb-2">3. Get Certified</h3>
+                    <p>Complete the final assessment and earn your certification.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq container mx-auto py-16 px-4">
+        <h2 class="text-4xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+        <div class="faq-item bg-white p-6 rounded shadow-md mb-4 cursor-pointer transition-all duration-200" onclick="toggleFaq(this)">
+            <h3 class="text-2xl font-bold mb-2">How long does certification take?</h3>
+            <p class="faq-description hidden">Certification duration varies by level but can typically be completed in a few weeks.</p>
+        </div>
+        <div class="faq-item bg-white p-6 rounded shadow-md mb-4 cursor-pointer transition-all duration-200" onclick="toggleFaq(this)">
+            <h3 class="text-2xl font-bold mb-2">Is prior experience required?</h3>
+            <p class="faq-description hidden">No, our beginner program is designed for newcomers with no experience.</p>
+        </div>
+        <div class="faq-item bg-white p-6 rounded shadow-md mb-4 cursor-pointer transition-all duration-200" onclick="toggleFaq(this)">
+            <h3 class="text-2xl font-bold mb-2">What resources are available?</h3>
+            <p class="faq-description hidden">We provide digital materials, video tutorials, and one-on-one coaching for all levels.</p>
+        </div>
+    </section>
+
+
+    <!-- CTA Section -->
+    <section class="cta bg-blue-600 text-white py-16 text-center">
+        <h2 class="text-3xl font-bold mb-4">Ready to Start Your Certification?</h2>
+        <p class="text-lg mb-8">Join us and start your leap towards mastery today!</p>
+        <button class="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-6 py-3 rounded">Enroll Now</button>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 GODSPEED. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFaq(item) {
+            // Toggle visibility of the FAQ description when item is clicked
+            const description = item.querySelector('.faq-description');
+            description.classList.toggle('hidden');
+        }
+    </script>
+
+</body>
+</html>

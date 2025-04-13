@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Godspeed</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #canvas-container {
+            width: 100%;
+            height: 600px;
+            position: relative;
+        }
+        canvas {
+            display: block;
+        }
+        .text-center {
+            text-align: center;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .bg-white {
+            background-color: white;
+        }
+
+        .text-blue-600 {
+            color: #2563eb; /* Replace with your preferred shade */
+        }
+
+        .hover\:bg-gray-100:hover {
+            background-color: #f3f4f6; /* Light gray on hover */
+        }
+
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="flex flex-col min-h-screen">
+        <header class="bg-black text-white">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="text-2xl font-bold">GODSPEED</div>
+                <nav class="hidden md:flex space-x-4">
+                    <a href="startup.html" class="hover:text-yellow-300 transition">Home</a>
+                    <a href="SEO-Services.html" class="hover:text-blue-400">SEO Services</a>
+                    <a href="certifications.html" class="hover:text-blue-400">Taking the Leap</a>
+                    <!-- <a href="#" class="hover:text-blue-400">Advanced Training</a> -->
+                    <a href="about-us.html" class="hover:text-blue-400">About Us</a>
+                </nav>
+                <button class="border border-white text-white hover:bg-white hover:text-black px-4 py-2">
+                    Sign In
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-grow">
+            <!-- The Three.js canvas will be rendered here -->
+            <section id="canvas-container"> </section>
+
+            <section class="py-16 bg-gray-100">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl font-bold text-center mb-8">Why GODSPEED?</h2>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="text-center">
+                            <img src="https://imgur.com/vGZ5btg.png" alt="Cutting Edge Tech" class="mx-auto mb-4 h-12 w-12 object-cover" />
+                            <h3 class="text-xl font-semibold mb-2">Cutting-edge Training</h3>
+                            <p>Learn from the best with our state-of-the-art space simulation facilities.</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="https://imgur.com/NQWpd91.png" alt="Unparalleled Experiences" class="mx-auto mb-4 h-12 w-12 object-cover" />
+                            <h3 class="text-xl font-semibold mb-2">Unparalleled Experiences</h3>
+                            <p>From zero-gravity dives to lunar expeditions, we offer it all.</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="https://imgur.com/R3YqiqZ.png" alt="Global Community" class="mx-auto mb-4 h-12 w-12 object-cover" />
+                            <h3 class="text-xl font-semibold mb-2">Global Community</h3>
+                            <p>Join a worldwide network of space enthusiasts and professionals.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- New Section: Space Certifications & SEO -->
+            <section class="py-16 bg-blue-500 text-white">
+                <div class="container mx-auto px-4 text-center">
+                    <h2 class="text-4xl font-bold mb-4">Looking to Improve Your SEO?</h2>
+                    <p class="text-xl mb-6">Our dedicated digital marketing services will help you increase your web traffic and visibility.</p>
+                    <a href="SEO-Services.html">
+                        <button class="bg-white text-blue-600 hover:bg-gray-100 px-6 py-3">Boost Your SEO</button>
+                    </a>
+                </div>
+            </section>
+
+            <section class="py-16">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl font-bold text-center mb-8">Featured Courses</h2>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <img src="https://i.imgur.com/5DvxQ1r.jpg" alt="Zero-G Basics" class="w-full h-48 object-cover" />
+                            <div class="p-4">
+                                <h3 class="text-xl font-semibold mb-2">Zero-G Basics</h3>
+                                <p class="text-gray-600 mb-4">Embark on an incredible journey through space with our expert-led courses.</p>
+                                <button class="border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2">Learn More</button>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <img src="https://i.imgur.com/ejTNzW3.jpg" alt="Lunar Surface Navigation" class="w-full h-48 object-cover" />
+                            <div class="p-4">
+                                <h3 class="text-xl font-semibold mb-2">Lunar Surface Navigation</h3>
+                                <p class="text-gray-600 mb-4">Master the techniques to navigate the lunar surface with confidence.</p>
+                                <button class="border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2">Learn More</button>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <img src="https://i.imgur.com/r2tdaHH.jpg" alt="Advanced Spacewalk Techniques" class="w-full h-48 object-cover" />
+                            <div class="p-4">
+                                <h3 class="text-xl font-semibold mb-2">Advanced Spacewalk Techniques</h3>
+                                <p class="text-gray-600 mb-4">Learn advanced techniques for conducting spacewalks safely and efficiently.</p>
+                                <button class="border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2">Learn More</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+</section>
+
+        <footer class="bg-gray-800 text-white py-8">
+            <div class="container mx-auto px-4">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Learn</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:text-blue-400">Courses</a></li>
+                            <li><a href="#" class="hover:text-blue-400">Certifications</a></li>
+                            <!-- <li><a href="#" class="hover:text-blue-400">Locations</a></li> -->
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">About</h3>
+                        <ul class="space-y-2">
+                            <li><a href="about-us.html" class="hover:text-blue-400">Our Story</a></li>
+                            <li><a href="about-us.html" class="hover:text-blue-400">Team</a></li>
+                            <li><a href="#" class="hover:text-blue-400">Careers</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Support</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:text-blue-400">FAQs</a></li>
+                            <li><a href="#" class="hover:text-blue-400">Contact Us</a></li>
+                            <li><a href="#" class="hover:text-blue-400">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
+                        <ul class="flex space-x-4">
+                            <li><a href="#" class="hover:text-blue-400">Facebook</a></li>
+                            <li><a href="#" class="hover:text-blue-400">Twitter</a></li>
+                            <li><a href="#" class="hover:text-blue-400">Instagram</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+    
+
+    <!-- Three.js Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+        
+        <script>
+            // Set up the scene
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, 600);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // Load the GLTF file of 3d models
+            const loader = new THREE.GLTFLoader();
+            let moon, NASA_Earth, blackhole;
+
+            loader.load('assets/glb_models/moon.glb', function (gltf) {
+                moon = gltf.scene;
+
+                moon.position.set(0.5, 0, 0); 
+                moon.rotation.set(0, 0, 0); 
+                moon.scale.set(0.25, 0.5, 0.25);
+                scene.add(moon);
+                console.log('Moon model loaded successfully!');
+                scene.add(blackhole);
+            }, undefined, function (error) {
+                console.error('An error occurred while loading the model:', error);
+            });
+
+            loader.load('assets/glb_models/NASA_Earth.glb', function (gltf) {
+                NASA_Earth = gltf.scene;
+
+                NASA_Earth.position.set(-8, -8, -20); 
+                NASA_Earth.rotation.set(0.5, 4.75, 0); 
+                NASA_Earth.scale.set(0.025, 0.035, 0.015); 
+
+                console.log('NASA_Earth model loaded successfully!');
+                scene.add(NASA_Earth);
+            }, undefined, function (error) {
+                console.error('An error occurred while loading the model:', error);
+            });
+
+            // assets/glb_models/blackhole.glb
+            loader.load('x', function (gltf) {
+                blackhole = gltf.scene;
+
+                blackhole.position.set(-1, 1, -8);
+                blackhole.rotation.set(0.15, 0.75, 0.25); 
+                blackhole.scale.set(0.0040, 0.0055, 0.0045);
+
+                console.log('blackhole model loaded successfully!');
+                scene.add(blackhole);
+            }, undefined, function (error) {
+                console.error('An error occurred while loading the model:', error);
+            });
+
+            // Set up lighting:
+            const light = new THREE.DirectionalLight(0xffffff, 2);
+            light.position.set(3, 5, 3).normalize();
+            scene.add(light);
+
+            // camera setup:
+            //camera.position.x = 0.0;
+            //camera.position.y = 0.0;
+            camera.position.z = 4.0;
+
+            // Function to create a starfield
+            function createStars() {
+            const starGeometry = new THREE.BufferGeometry();
+            const starColors = [];
+            const starMaterial = new THREE.PointsMaterial({ vertexColors: true, size: 0.5 });
+
+            // Array to hold star positions
+            const starVertices = [];
+            for (let i = 0; i < 1000; i++) { // 1000 stars
+                const x = (Math.random() - 0.5) * 2000; 
+                const y = (Math.random() - 0.5) * 2000;
+                const z = (Math.random() - 0.5) * 2000;
+                starVertices.push(x, y, z);
+
+                // Randomize color with more white stars
+                const temperature = Math.random();
+                const color = new THREE.Color();
+                
+                if (temperature < 0.1) {
+                    // 10% cool stars (red to yellow)
+                    color.setHSL(0.05 + temperature * 0.1, 1, 0.5 + temperature * 0.2);
+                } else if (temperature < 0.2) {
+                    // 10% hot stars (white to blue)
+                    color.setHSL(0.6 + temperature * 0.2, 1, 0.7 + temperature * 0.15);
+                } else {
+                    // 80% white stars
+                    color.setHSL(0.0, 0.0, 0.9);
+                }
+
+                starColors.push(color.r, color.g, color.b);
+            }
+
+            starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+            starGeometry.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
+
+            // Create points (stars) and add them to the scene
+            const stars = new THREE.Points(starGeometry, starMaterial);
+            scene.add(stars);
+        }
+    
+        // Animation loop
+        const animate = function () {
+            requestAnimationFrame(animate);
+            if (NASA_Earth) {
+                NASA_Earth.rotation.x += 0.00000; 
+                NASA_Earth.rotation.y += 0.000035; // main axis: <= | =>
+                NASA_Earth.rotation.z += 0.00000; // 2nd Axis: Up/Down
+            }
+            if (moon) {
+                moon.rotation.x += 0.00000; 
+                moon.rotation.y += 0.00155;
+                moon.rotation.z += 0.00000; 
+            }
+            if (blackhole) {
+                blackhole.rotation.x += 0.00000;
+                blackhole.rotation.y += 0.00000;
+                blackhole.rotation.z += 0.00000;
+            }
+            renderer.render(scene, camera);
+        };
+        createStars();
+        animate();
+
+        // Resize the canvas on window resize
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = 600;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
+        </script>
+    </div>
+</body>
+</html>

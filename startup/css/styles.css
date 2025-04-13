@@ -1,0 +1,13 @@
+/* css/styles.css */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+#canvas-container {
+    width: 100%;
+    height: 600px;
+    position: relative;
+}
+canvas {
+    display: block;
+}
