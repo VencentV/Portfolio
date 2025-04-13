@@ -1,135 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Vencent's Solar System</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background: #000;
-    }
-    canvas {
-      display: block;
-    }
-    .label {
-      position: absolute;
-      color: white;
-      font-size: 14px;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      transition: color 0.2s ease;
-    }
-    .label.hovered {
-      color: yellow;
-    }
-    .popup {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0.9);
-      padding: 15px;
-      border-radius: 10px;
-      color: black;
-      max-width: 300px;
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 10;
-    }
-    .popup img {
-      width: 100%;
-      border-radius: 5px;
-    }
-    .popup-close {
-      margin-top: 10px;
-      background: #333;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <div id="popup" class="popup">
-    <div id="popupContent"></div>
-    <button id="closePopup" class="popup-close">Close</button>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
-  <script>
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-
-    const sunGeometry = new THREE.CircleGeometry(2, 64);
-    const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xFDB813 });
-    const sun = new THREE.Mesh(sunGeometry, sunMaterial);
-    sun.position.set(0, 0, 0);
-    scene.add(sun);
-
-    const planetData = [
-      { name: 'Mercury', color: 0xaaaaaa, radius: 5, speed: 0.00048 },
-      { name: 'Venus', color: 0xffcc99, radius: 7, speed: 0.00035 },
-      { name: 'Earth', color: 0x3399ff, radius: 9, speed: 0.00030 },
-      { name: 'Mars', color: 0xff6633, radius: 11, speed: 0.00024 },
-      { name: 'Jupiter', color: 0xffcc66, radius: 14, speed: 0.00013 },
-      { name: 'Saturn', color: 0xffeeaa, radius: 17, speed: 0.00009 },
-      { name: 'Uranus', color: 0x66ffff, radius: 20, speed: 0.000068 },
-      { name: 'Neptune', color: 0x3366ff, radius: 23, speed: 0.000054 },
-      { name: 'Pluto', color: 0xcccccc, radius: 26, speed: 0.000047 }
-    ];
-
-    const planets = [];
-    const labels = [];
-    const hoverRings = [];
-    const planetNodes = new Map();
-    let planetAngles = JSON.parse(localStorage.getItem('planetAngles')) || {};
-
-    const popup = document.getElementById('popup');
-    const popupContent = document.getElementById('popupContent');
-    const closePopup = document.getElementById('closePopup');
-
-    closePopup.addEventListener('click', () => {
-      popup.style.display = 'none';
-    });
-
-    function createPlanetNodes(planetMesh) {
-      const nodes = [];
-      const planetRadius = 0.5;
-      const nodeRadius = planetRadius / 10;
-      const usedPositions = [];
-
-      for (let i = 0; i < 4; i++) {
-        let x, y, valid = false;
-        while (!valid) {
-          const angle = Math.random() * Math.PI * 2;
-          const dist = Math.random() * 0.4;
-          x = dist * Math.cos(angle);
-          y = dist * Math.sin(angle);
-          valid = usedPositions.every(pos => Math.hypot(x - pos[0], y - pos[1]) > nodeRadius * 2);
-          if (valid) usedPositions.push([x, y]);
-        }
-        const geometry = new THREE.CircleGeometry(nodeRadius, 16);
-        const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-        const node = new THREE.Mesh(geometry, material);
-        node.position.set(x, y, 0.01);
-        node.visible = false;
-        node.userData.type = 'node';
-        node.userData.content = {
-          images: ['https://via.placeholder.com/300x150', 'https://via.placeholder.com/300x150'],
-          description: `Project Node #${i + 1} for ${planetMesh.userData.name}.`
-        };
-        planetMesh.add(node);
-        nodes.push(node);
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vencent's Solar System</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: black;
       }
       canvas {
         display: block;
