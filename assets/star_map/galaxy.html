@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vencent's Spatial Portfolio</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #000;
+      }
+
+      canvas {
+        display: block;
+      }
+
+      .popup {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        padding: 15px;
+        border-radius: 10px;
+        color: black;
+        max-width: 300px;
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 10;
+      }
+
+      .popup img {
+        width: 100%;
+        border-radius: 5px;
+      }
+
+      .popup-close {
+        margin-top: 10px;
+        background: #333;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="popup" class="popup">
+      <div id="popupContent"></div>
+      <button id="closePopup" class="popup-close">Close</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
+    <script>
+      const scene = new THREE.Scene();
+      const galaxyGroup = new THREE.Group();
+      scene.add(galaxyGroup);
+
+      function createSpiralGalaxy({
+        count = 3000,
+        radius = 100,
+        arms = 4,
+        randomness = 0.5,
+      }) {
+        const geometry = new THREE.BufferGeometry();
+        const positions = [];
+
+        for (let i = 0; i < count; i++) {
+          const r = Math.random() * radius;
+          const armAngle = ((i % arms) / arms) * Math.PI * 2;
+          const angle = armAngle + r * 0.1;
+
+          const x =
+            Math.cos(angle) * r + (Math.random() - 0.5) * randomness * r;
+          const y = (Math.random() - 0.5) * randomness * r * 0.3;
+          const z =
+            Math.sin(angle) * r + (Math.random() - 0.5) * randomness * r;
+
+          positions.push(x, y, z);
+        }
+
+        geometry.setAttribute(
+          "position",
+          new THREE.Float32BufferAttribute(positions, 3)
+        );
+        const material = new THREE.PointsMaterial({
+          color: 0xffffff,
+          size: 0.5,
+        });
+        const points = new THREE.Points(geometry, material);
+        galaxyGroup.add(points);
+      }
+
+      function addStarfield() {
+        const geometry = new THREE.BufferGeometry();
+        const vertices = [];
+
+        for (let i = 0; i < 1000; i++) {
+          const x = (Math.random() - 0.5) * 2000;
+          const y = (Math.random() - 0.5) * 2000;
+          const z = (Math.random() - 0.5) * 2000;
+          vertices.push(x, y, z);
+        }
+
+        geometry.setAttribute(
+          "position",
+          new THREE.Float32BufferAttribute(vertices, 3)
+        );
+        const material = new THREE.PointsMaterial({ color: 0x8888ff, size: 1 });
+        const stars = new THREE.Points(geometry, material);
+        scene.add(stars);
+      }
+
+      createSpiralGalaxy({});
+      addStarfield();
+
+      const solarDistance = 25;
+      const solarAngle = Math.PI * 1.35;
+      const solarSystemPosition = new THREE.Vector3(
+        Math.cos(solarAngle) * solarDistance,
+        0,
+        Math.sin(solarAngle) * solarDistance
+      );
+
+      const solarSystemGlow = new THREE.Mesh(
+        new THREE.SphereGeometry(2, 32, 32),
+        new THREE.MeshBasicMaterial({
+          color: 0xffff00,
+          transparent: true,
+          opacity: 0.8,
+        })
+      );
+      solarSystemGlow.position.copy(solarSystemPosition);
+      solarSystemGlow.visible = false;
+      galaxyGroup.add(solarSystemGlow);
+
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        2000
+      );
+      camera.position.copy(
+        solarSystemPosition.clone().add(new THREE.Vector3(0, 0, 40))
+      );
+
+      const cameraStates = {
+        SOLAR: "solar",
+        GALAXY: "galaxy",
+      };
+      let cameraState = cameraStates.SOLAR;
+
+      function updateViewMode() {
+        const distanceToSolarSystem =
+          camera.position.distanceTo(solarSystemPosition);
+
+        if (
+          distanceToSolarSystem > 200 &&
+          cameraState !== cameraStates.GALAXY
+        ) {
+          galaxyGroup.visible = true;
+          solarSystemGlow.visible = true;
+          cameraState = cameraStates.GALAXY;
+        } else if (
+          distanceToSolarSystem <= 200 &&
+          cameraState !== cameraStates.SOLAR
+        ) {
+          galaxyGroup.visible = false;
+          solarSystemGlow.visible = false;
+          cameraState = cameraStates.SOLAR;
+
+          // Reset galaxy rotation gently
+          galaxyGroup.rotation.x *= 0.5;
+          galaxyGroup.rotation.y *= 0.5;
+        }
+      }
+
+      window.addEventListener("wheel", (event) => {
+        const direction = Math.sign(event.deltaY);
+        const zoomStep = 10;
+        const directionVector = camera.position
+          .clone()
+          .sub(solarSystemPosition)
+          .normalize();
+        camera.position.add(
+          directionVector.multiplyScalar(zoomStep * direction)
+        );
+        camera.position.clampLength(20, 500);
+        updateViewMode();
+      });
+
+      let isDragging = false;
+      let hasMoved = false;
+      let previousMousePosition = { x: 0, y: 0 };
+      const DRAG_SENSITIVITY = 0.003;
+
+      window.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        hasMoved = false;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+      });
+
+      window.addEventListener("mouseup", () => {
+        setTimeout(() => {
+          isDragging = false;
+        }, 10);
+      });
+
+      window.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        hasMoved = true;
+
+        const deltaX = e.clientX - previousMousePosition.x;
+        const deltaY = e.clientY - previousMousePosition.y;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+
+        galaxyGroup.rotation.y += deltaX * DRAG_SENSITIVITY;
+        galaxyGroup.rotation.x += deltaY * DRAG_SENSITIVITY;
+      });
+
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        if (!isDragging) {
+          galaxyGroup.rotation.y += 0.0005;
+        }
+
+        // Solar system glow pulse
+        if (cameraState === cameraStates.SOLAR) {
+          solarSystemGlow.material.color.set(0xffff66);
+          const scale = Math.sin(Date.now() * 0.005) * 0.1 + 1.0;
+          solarSystemGlow.scale.set(scale, scale, scale);
+        } else {
+          solarSystemGlow.material.color.set(0xffff00);
+          solarSystemGlow.scale.set(1, 1, 1);
+        }
+
+        const rotatedSolarPosition = solarSystemPosition
+          .clone()
+          .applyAxisAngle(new THREE.Vector3(0, 1, 0), galaxyGroup.rotation.y)
+          .applyAxisAngle(new THREE.Vector3(1, 0, 0), galaxyGroup.rotation.x);
+
+        camera.lookAt(rotatedSolarPosition);
+        renderer.render(scene, camera);
+      }
+      animate();
+    </script>
+  </body>
+</html>
