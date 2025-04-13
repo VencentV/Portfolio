@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Solar System - Vencent V</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: black;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+      const scene = new THREE.Scene();
+
+      // Optional: basic star-like background
+      scene.background = new THREE.Color(0x000010);
+
+      const camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        5000
+      );
+      camera.position.set(0, 50, 100);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+
+      const light = new THREE.DirectionalLight(0xffffff, 2);
+      light.position.set(100, 200, 100);
+      scene.add(light);
+
+      const ambient = new THREE.AmbientLight(0x888888);
+      scene.add(ambient);
+
+      const planetNames = [
+        "sun",
+        "mercury",
+        "venus",
+        "earth",
+        "mars",
+        "jupiter",
+        "saturn",
+        "uranus",
+        "neptune",
+        "pluto",
+      ];
+      const planetDistance = {
+        sun: 0,
+        mercury: 10,
+        venus: 18,
+        earth: 26,
+        mars: 34,
+        jupiter: 48,
+        saturn: 62,
+        uranus: 76,
+        neptune: 90,
+        pluto: 105,
+      };
+
+      const loader = new THREE.GLTFLoader();
+
+      planetNames.forEach((name, index) => {
+        loader.load(
+          `models/solar_system_models/${name}.glb`,
+          (gltf) => {
+            const planet = gltf.scene;
+            const angle = (index / planetNames.length) * Math.PI * 2;
+            const radius = planetDistance[name] || 20;
+            planet.position.set(
+              radius * Math.cos(angle),
+              0,
+              radius * Math.sin(angle)
+            );
+            planet.scale.set(3, 3, 3); // optional: adjust per-planet
+            scene.add(planet);
+          },
+          undefined,
+          (err) => {
+            console.error(`Error loading ${name}:`, err);
+          }
+        );
+      });
+
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      animate();
+
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    </script>
+  </body>
+</html>
