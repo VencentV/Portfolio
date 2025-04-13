@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>TRANSAR - ASL Translator</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="welcome-container">
+    <div class="info-box">
+      <h1>TRANSAR - AR Translator</h1>
+      <p>Author: Vencent Vang</p>
+      <!-- Resume Links Section -->
+      <p><a href="https://drive.google.com/file/d/1ApWmzRYl6-AdpvQY6H3JY85eFWRQPgky/view" target="_blank">View my Resume (PDF)</a></li>
+      <p><a href="https://drive.google.com/uc?id=1ApWmzRYl6-AdpvQY6H3JY85eFWRQPgky&export=download" target="_blank">Download my Resume (PDF)</a></li>
+      <!-- End Resume Links Section -->
+      
+      <p>Description: My real-time AR translator/interpreter for American Sign Language (ASL). By leveraging the power of datasets, Computer Vision (CV), Machine Learning (ML), and a Fully Connected Network model this application is able to interpret ASL in real-time; translating each gesture into textual letters displayed as AR overlays.</p>
+      <p>Note: This application has only tapped into models which use 1/6th of the total dataset! I'm currently limited hardware-wise in training a model that fully ultizies the entire ASL dataset. </p>
+      <p>Instructions: Please select an AI/ML model and toggle mirroring (if needed). Then click "Start Translation" to proceed.</p>
+
+    </div>
+    <div class="model-selection">
+      <label><input type="radio" name="model" value="10"> Model 10</label>
+      <label><input type="radio" name="model" value="100"> Model 100</label>
+      <label><input type="radio" name="model" value="500"> Model 500</label>
+      <!-- <label><input type="radio" name="model" value="1000"> Model 1000</label> -->
+    </div>
+    <div class="mirror-toggle">
+      <label><input type="checkbox" id="mirror-checkbox"> Enable Mirroring</label>
+    </div>
+    <button onclick="startTranslation()">Start Translation</button>
+  </div>
+
+  <script>
+    function startTranslation() {
+      const selectedModel = document.querySelector('input[name="model"]:checked');
+      const enableMirroring = document.getElementById('mirror-checkbox').checked;
+
+      if (!selectedModel) {
+        alert('Please select a model.');
+        return;
+      }
+
+      const model = selectedModel.value;
+      localStorage.setItem('selectedModel', model);
+      localStorage.setItem('enableMirroring', enableMirroring);
+      window.location.href = 'app.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Hand Tracking AR</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <a-scene embedded arjs='sourceType: webcam;'>
+        <a-sphere id="hand-sphere" color="red" radius="0.1" position="0 0 -1" visible="false"></a-sphere>
+        <a-entity camera></a-entity>
+    </a-scene>
+    <video id="video" autoplay style="display:none;"></video> <!-- Hide the video element if not needed -->
+    <script src="js/hand_tracking.js"></script>
+</body>
+</html>
