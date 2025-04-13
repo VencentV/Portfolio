@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
   height: 100%;
   margin: 0;
   font-family: Arial, sans-serif;
@@ -19,7 +20,7 @@ body, html {
   padding: 20px;
   border: 1px solid #ddd; /* Light grey border */
   background-color: #ffffff; /* White background for contrast */
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.1); /* Adding subtle shadow for depth */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adding subtle shadow for depth */
   width: 80%; /* Responsive width */
   max-width: 600px; /* Maximum width */
   margin-bottom: 20px;
@@ -27,7 +28,8 @@ body, html {
   color: #333; /* Dark grey text for contrast */
 }
 
-.model-selection, .mirror-toggle {
+.model-selection,
+.mirror-toggle {
   margin-bottom: 20px;
 }
 
@@ -39,7 +41,7 @@ button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-  background-color: #4CAF50; /* Green background */
+  background-color: #4caf50; /* Green background */
   color: white;
   border: none;
   border-radius: 5px;
