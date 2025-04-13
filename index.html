@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vencent V - Spatial Engineer & Designer</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .toolbar {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 30px;
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 10px 30px;
+      border-radius: 30px;
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    .toolbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+
+    .toolbar a:hover {
+      color: #ff6ec4;
+    }
+
+    .logo {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      width: 40px;
+      height: 40px;
+      background: white;
+      border-radius: 50%;
+      z-index: 10;
+    }
+
+    .chatbot {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border-radius: 50%;
+      z-index: 10;
+    }
+
+    .center-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 5;
+    }
+
+    .center-content h1 {
+      font-size: 3rem;
+      margin: 0;
+    }
+
+    .center-content h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-top: 10px;
+    }
+
+    .center-content p {
+      font-size: 1.1rem;
+      margin: 20px 0;
+    }
+
+    #enterButton {
+      background: linear-gradient(90deg, #ff6ec4, #7873f5);
+      border: none;
+      padding: 15px 30px;
+      border-radius: 30px;
+      font-size: 1.2rem;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 15px #ff6ec4;
+      transition: all 0.3s ease;
+    }
+
+    #enterButton:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #ff6ec4, 0 0 30px #7873f5;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo"></div>
+
+  <div class="toolbar">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Projects</a>
+    <a href="#">Contact</a>
+  </div>
+
+  <div class="center-content">
+    <h1>Vencent V</h1>
+    <h2>Spatial Engineer & Designer</h2>
+    <p>Storytelling through a Computer's Vision.</p>
+    <button id="enterButton">Enter the Solar System 🌌</button>
+  </div>
+
+  <div class="chatbot"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+  <script>
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    camera.position.z = 8;
+
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(5, 10, 7.5);
+    scene.add(light);
+
+    let rocket = null;
+    let rocketBody = null;
+    let fire = null;
+    let thruster = null;
+    let indicator = null;
+    let velocity = new THREE.Vector3(0, 0, 0);
+    let mouse = new THREE.Vector2(0, 0);
+    const smokeParticles = [];
+
+    let isRolling = false;
+    let rollProgress = 0;
+    let rollCooldown = 0;
+
+    document.addEventListener('mousedown', (e) => {
+      if (e.button === 0 && !isRolling && rocketBody && rollCooldown <= 0) {
+        isRolling = true;
+        rollProgress = 0;
+        rollCooldown = 180; // ~3 seconds at 60fps
+      }
+    });
+
+    document.addEventListener('mousemove', (event) => {
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -((event.clientY / window.innerHeight) * 2 - 1);
+    });
+
+    const loader = new THREE.GLTFLoader();
+    loader.load('models/rocket1.glb', function (gltf) {
+      rocket = new THREE.Object3D();
+      rocketBody = gltf.scene;
+      rocket.add(rocketBody);
+      scene.add(rocket);
+
+      rocket.scale.set(1, 1, 1);
+      rocket.position.set(0, 0, 0);
+
+      thruster = new THREE.Object3D();
+      thruster.position.set(0, -0.1, 0);
+      rocketBody.add(thruster);
+
+      const fireTexture = new THREE.TextureLoader().load('assets/fire_glow.png');
+      const fireMaterial = new THREE.MeshBasicMaterial({
+        map: fireTexture,
+        color: 0xff6600,
+        transparent: true,
+        opacity: 0.0,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+      });
+      const fireGeometry = new THREE.PlaneGeometry(0.3, 0.3);
+      fire = new THREE.Mesh(fireGeometry, fireMaterial);
+      fire.rotation.z = Math.PI;
+      thruster.add(fire);
+
+      // Cooldown visual indicator
+      const indicatorMat = new THREE.MeshBasicMaterial({
+        color: 0x00ffff,
+        transparent: true,
+        opacity: 0.5,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        side: THREE.DoubleSide
+      });
+      const indicatorGeo = new THREE.RingGeometry(0.12, 0.18, 32);
+      indicator = new THREE.Mesh(indicatorGeo, indicatorMat);
+      indicator.rotation.x = Math.PI / 2;
+      rocketBody.add(indicator);
+
+      window.smokeMaterial = new THREE.SpriteMaterial({
+        map: new THREE.TextureLoader().load('assets/smoke_particle.png'),
+        transparent: true,
+        opacity: 0.3,
+        depthWrite: false
+      });
+    }, undefined, function (error) {
+      console.error('Error loading GLB:', error);
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (rocket) {
+        const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+        vector.unproject(camera);
+        const dir = vector.sub(camera.position).normalize();
+        const distance = -camera.position.z / dir.z;
+        const target = camera.position.clone().add(dir.multiplyScalar(distance));
+
+        const dx = target.x - rocket.position.x;
+        const dy = target.y - rocket.position.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist > 0.05) {
+          velocity.x += dx * 0.003;
+          velocity.y += dy * 0.003;
+        }
+
+        // Drag control (less drag during roll)
+        velocity.multiplyScalar(isRolling ? 0.9 : 0.8);
+        rocket.position.add(velocity);
+
+        rocket.rotation.z = Math.atan2(dy, dx) - Math.PI / 2;
+
+        if (fire && fire.material) {
+          const targetOpacity = velocity.length() > 0.02 ? 0.9 : 0.0;
+          fire.material.opacity += (targetOpacity - fire.material.opacity) * 0.1;
+        }
+
+        if (velocity.length() > 0.05 && window.smokeMaterial) {
+          const smoke = new THREE.Sprite(window.smokeMaterial.clone());
+          const velDir = velocity.clone().normalize().multiplyScalar(-0.4);
+          smoke.position.copy(rocket.position).add(velDir);
+          smoke.scale.set(0.3, 0.3, 0.3);
+          scene.add(smoke);
+          smokeParticles.push({ sprite: smoke, life: 1.0 });
+        }
+
+        if (isRolling && rocketBody) {
+          const rollSpeed = 0.05;
+          rocketBody.rotation.y += rollSpeed;
+          rollProgress += rollSpeed;
+          if (rollProgress >= Math.PI * 2) {
+            isRolling = false;
+            rocketBody.rotation.y = 0;
+          }
+        }
+
+        if (rollCooldown > 0) rollCooldown--;
+
+        // Indicator glow logic
+        if (indicator && indicator.material) {
+          const maxOpacity = 2;
+          const isReady = rollCooldown <= 0;
+          const target = isReady ? maxOpacity : 0.0;
+          indicator.material.opacity += (target - indicator.material.opacity) * 0.1;
+        }
+      }
+
+      for (let i = smokeParticles.length - 1; i >= 0; i--) {
+        const p = smokeParticles[i];
+        p.life -= 0.02;
+        p.sprite.material.opacity = p.life;
+        p.sprite.scale.multiplyScalar(1.01);
+        if (p.life <= 0) {
+          scene.remove(p.sprite);
+          smokeParticles.splice(i, 1);
+        }
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
