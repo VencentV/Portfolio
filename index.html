@@ -289,17 +289,18 @@
               (targetOpacity - fire.material.opacity) * 0.1;
           }
 
-          // Smoke spawn limiter: spawn every 3 frames
+          // Smoke spawn limiter: spawn every frame for denser trail
           if (velocity.length() > 0.05 && window.smokeMaterial) {
             smokeSpawnFrame++;
-            if (smokeSpawnFrame % 3 === 0) {
-              const smoke = new THREE.Sprite(window.smokeMaterial.clone());
-              const velDir = velocity.clone().normalize().multiplyScalar(-0.4);
-              smoke.position.copy(rocket.position).add(velDir);
-              smoke.scale.set(0.3, 0.3, 0.3);
-              scene.add(smoke);
-              smokeParticles.push({ sprite: smoke, life: 1.0 });
-            }
+            // Remove modulo check for denser smoke
+            // if (smokeSpawnFrame % 3 === 0) {
+            const smoke = new THREE.Sprite(window.smokeMaterial.clone());
+            const velDir = velocity.clone().normalize().multiplyScalar(-0.4);
+            smoke.position.copy(rocket.position).add(velDir);
+            smoke.scale.set(0.3, 0.3, 0.3);
+            scene.add(smoke);
+            smokeParticles.push({ sprite: smoke, life: 1.0 });
+            // }
           } else {
             smokeSpawnFrame = 0;
           }
